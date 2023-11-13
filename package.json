@@ -1,4 +1,11 @@
 {
   "name": "com.blueoyster.reactive-unity",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "Simple reactivity for Unity.",
+  "displayName": "reactive-unity",
+  "author": {
+    "name": "Justin Awrey",
+    "email": "justin@justinawrey.com",
+    "url": "https://justinawrey.com"
+  }
 }
