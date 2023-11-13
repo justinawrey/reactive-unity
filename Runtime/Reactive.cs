@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace OysterUtils
+namespace ReactiveUnity
 {
     public class Reactive<T>
     {
