@@ -6,7 +6,7 @@ namespace ReactiveUnity
     public class Reactive<T>
     {
         private T _val;
-        private Dictionary<Func<T, bool>, List<Action<T>>> _predicates = new Dictionary<Func<T, bool>, List<Action<T>>>();
+        private Dictionary<Func<T, T, bool>, List<Action<T, T>>> _predicates = new Dictionary<Func<T, T, bool>, List<Action<T, T>>>();
 
         public Reactive(T val)
         {
@@ -26,14 +26,14 @@ namespace ReactiveUnity
             }
         }
 
-        public void When(Func<T, bool> predicate, Action<T> cb)
+        public void When(Func<T, T, bool> predicate, Action<T, T> cb)
         {
             AddPredicate(predicate, cb);
         }
 
-        public void OnChange(Action<T> cb)
+        public void OnChange(Action<T, T> cb)
         {
-            Func<T, bool> predicate = val => true;
+            Func<T, T, bool> predicate = (_, __) => true;
             AddPredicate(predicate, cb);
         }
 
@@ -49,19 +49,19 @@ namespace ReactiveUnity
 
             foreach (var pair in _predicates)
             {
-                Func<T, bool> predicate = pair.Key;
-                List<Action<T>> cbs = pair.Value;
+                Func<T, T, bool> predicate = pair.Key;
+                List<Action<T, T>> cbs = pair.Value;
 
-                if (!predicate(_val))
+                if (!predicate(prevValue, _val))
                 {
                     continue;
                 }
 
-                cbs.ForEach(cb => cb(_val));
+                cbs.ForEach(cb => cb(prevValue, _val));
             }
         }
 
-        private void AddPredicate(Func<T, bool> predicate, Action<T> cb)
+        private void AddPredicate(Func<T, T, bool> predicate, Action<T, T> cb)
         {
             if (_predicates.ContainsKey(predicate))
             {
@@ -69,7 +69,7 @@ namespace ReactiveUnity
             }
             else
             {
-                _predicates[predicate] = new List<Action<T>>() { cb };
+                _predicates[predicate] = new List<Action<T, T>>() { cb };
             }
         }
     }
