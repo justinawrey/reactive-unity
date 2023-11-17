@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ReactiveUnity
 {
+    [Serializable]
     public class Reactive<T>
     {
-        private T _val;
+        [SerializeField] private T _val;
         private Dictionary<Func<T, T, bool>, List<Action<T, T>>> _predicates = new Dictionary<Func<T, T, bool>, List<Action<T, T>>>();
 
         public Reactive(T val)
