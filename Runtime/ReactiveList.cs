@@ -8,14 +8,16 @@ namespace ReactiveUnity
     private List<Action<T>> _addCbs = new List<Action<T>>();
     private List<Action<T>> _removeCbs = new List<Action<T>>();
 
-    public void OnAdd(Action<T> cb)
+    public Action OnAdd(Action<T> cb)
     {
       _addCbs.Add(cb);
+      return () => { _addCbs.Remove(cb); };
     }
 
-    public void OnRemove(Action<T> cb)
+    public Action OnRemove(Action<T> cb)
     {
       _removeCbs.Add(cb);
+      return () => { _removeCbs.Remove(cb); };
     }
 
     public new void Add(T item)

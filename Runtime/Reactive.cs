@@ -28,15 +28,17 @@ namespace ReactiveUnity
             }
         }
 
-        public void When(Func<T, T, bool> predicate, Action<T, T> cb)
+        public Action When(Func<T, T, bool> predicate, Action<T, T> cb)
         {
-            AddPredicate(predicate, cb);
+            AddCb(predicate, cb);
+            return () => RemoveCb(predicate, cb);
         }
 
-        public void OnChange(Action<T, T> cb)
+        public Action OnChange(Action<T, T> cb)
         {
             Func<T, T, bool> predicate = (_, __) => true;
-            AddPredicate(predicate, cb);
+            AddCb(predicate, cb);
+            return () => RemoveCb(predicate, cb);
         }
 
         private void Set(T to)
@@ -63,7 +65,7 @@ namespace ReactiveUnity
             }
         }
 
-        private void AddPredicate(Func<T, T, bool> predicate, Action<T, T> cb)
+        private void AddCb(Func<T, T, bool> predicate, Action<T, T> cb)
         {
             if (_predicates.ContainsKey(predicate))
             {
@@ -73,6 +75,16 @@ namespace ReactiveUnity
             {
                 _predicates[predicate] = new List<Action<T, T>>() { cb };
             }
+        }
+
+        private void RemoveCb(Func<T, T, bool> predicate, Action<T, T> cb)
+        {
+            if (!_predicates.ContainsKey(predicate))
+            {
+                return;
+            }
+
+            _predicates[predicate].Remove(cb);
         }
     }
 }
