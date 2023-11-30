@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +7,6 @@ using UnityEngine;
 namespace ReactiveUnity
 {
     [Serializable]
-    #nullable enable
     public class Reactive<T>
     {
         [SerializeField] private T? _val;
@@ -47,14 +48,7 @@ namespace ReactiveUnity
             T? prevValue = _val;
             _val = to;
             
-            if (prevValue != null) {
-                if (prevValue.Equals(_val))
-                {
-                    return;
-                }
-            }
-
-            if (prevValue == null && _val == null) 
+            if (Equals(prevValue, _val)) 
             {
                 return;
             }
@@ -92,14 +86,12 @@ namespace ReactiveUnity
                 return;
             }
             
-            if(_predicates[predicate].Count == 1) 
-            {
-                _predicates.Remove(predicate);
-                return;
-            }
-            
             _predicates[predicate].Remove(cb);
+            if(_predicates[predicate].Count == 0)
+            {
+                _predicates.Remove(predicate);      
+            }               
         }
     }
-    #nullable disable
 }
+#nullable disable
