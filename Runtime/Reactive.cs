@@ -54,7 +54,7 @@ namespace ReactiveUnity
                 }
             }
 
-            if (prevValue == null & _val == null) 
+            if (prevValue == null && _val == null) 
             {
                 return;
             }
