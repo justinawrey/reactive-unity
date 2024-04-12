@@ -40,5 +40,18 @@ namespace ReactiveUnity
         cb(key, val);
       }
     }
+
+    public new void Clear()
+    {
+      foreach (var kvp in this)
+      {
+        foreach (Action<K, V> cb in _removeCbs)
+        {
+          cb(kvp.Key, kvp.Value);
+        }
+      }
+
+      base.Clear();
+    }
   }
 }

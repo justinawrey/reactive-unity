@@ -39,5 +39,18 @@ namespace ReactiveUnity
         cb(item);
       }
     }
+
+    public new void Clear()
+    {
+      ForEach(item =>
+      {
+        foreach (Action<T> cb in _removeCbs)
+        {
+          cb(item);
+        }
+      });
+
+      base.Clear();
+    }
   }
 }
