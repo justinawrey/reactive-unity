@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #nullable enable
 
 using System;
@@ -95,3 +96,30 @@ namespace ReactiveUnity
     }
 }
 #nullable disable
+=======
+using System;
+
+namespace ReactiveUnity
+{
+  [Serializable]
+  public class Reactive<T> : ReactiveBase<T>
+  {
+    public Reactive(T val)
+    {
+      _val = val;
+    }
+
+    public new T Value
+    {
+      get
+      {
+        return _val;
+      }
+      set
+      {
+        Set(value);
+      }
+    }
+  }
+}
+>>>>>>> 1a1ea1f (update to 2.0.0)

@@ -1,7 +1,7 @@
 {
   "name": "com.blueoyster.reactive-unity",
-  "version": "1.6.0",
-  "description": "Simple reactivity for Unity.",
+  "version": "2.0.0",
+  "description": "Reactive primitives.",
   "displayName": "reactive-unity",
   "author": {
     "name": "Justin Awrey",

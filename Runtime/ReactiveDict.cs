@@ -1,23 +1,40 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 
 namespace ReactiveUnity
 {
-  public class ReactiveDict<K, V> : Dictionary<K, V>
+  [Serializable]
+  public class ReactiveDict<K, V> : Dictionary<K, V>, IReactiveCallbackOwner<Dictionary<K, V>>
   {
     private List<Action<K, V>> _addCbs = new List<Action<K, V>>();
     private List<Action<K, V>> _removeCbs = new List<Action<K, V>>();
+    public Dictionary<K, V>? Value => this;
 
     public Action OnAdd(Action<K, V> cb)
     {
       _addCbs.Add(cb);
-      return () => { _addCbs.Remove(cb); };
+      return () => _addCbs.Remove(cb);
     }
 
     public Action OnRemove(Action<K, V> cb)
     {
       _removeCbs.Add(cb);
-      return () => { _removeCbs.Remove(cb); };
+      return () => _removeCbs.Remove(cb);
+    }
+
+    public Action OnChange(Action<Dictionary<K, V>?> cb)
+    {
+      Action<K, V> curried = (_, __) => cb(Value);
+
+      _addCbs.Add(curried);
+      _removeCbs.Add(curried);
+
+      return () =>
+      {
+        _addCbs.Remove(curried);
+        _removeCbs.Remove(curried);
+      };
     }
 
     public new void Add(K key, V val)
@@ -55,3 +72,4 @@ namespace ReactiveUnity
     }
   }
 }
+#nullable disable
