@@ -103,5 +103,275 @@ namespace ReactiveUnity
                 unsub4();
             });
         }
+
+        public Action React<TIn1, TIn2, TIn3, TIn4, TIn5>(
+            IReactiveCallbackOwner<TIn1> tracked1,
+            IReactiveCallbackOwner<TIn2> tracked2,
+            IReactiveCallbackOwner<TIn3> tracked3,
+            IReactiveCallbackOwner<TIn4> tracked4,
+            IReactiveCallbackOwner<TIn5> tracked5,
+            Func<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> cb
+        )
+        {
+            Set(cb(tracked1.Value, tracked2.Value, tracked3.Value, tracked4.Value, tracked5.Value));
+
+            Action unsub1 = tracked1.OnChange(curr =>
+                Set(cb(curr, tracked2.Value, tracked3.Value, tracked4.Value, tracked5.Value))
+            );
+            Action unsub2 = tracked2.OnChange(curr =>
+                Set(cb(tracked1.Value, curr, tracked3.Value, tracked4.Value, tracked5.Value))
+            );
+            Action unsub3 = tracked3.OnChange(curr =>
+                Set(cb(tracked1.Value, tracked2.Value, curr, tracked4.Value, tracked5.Value))
+            );
+            Action unsub4 = tracked4.OnChange(curr =>
+                Set(cb(tracked1.Value, tracked2.Value, tracked3.Value, curr, tracked5.Value))
+            );
+            Action unsub5 = tracked5.OnChange(curr =>
+                Set(cb(tracked1.Value, tracked2.Value, tracked3.Value, tracked4.Value, curr))
+            );
+
+            return CacheUnsubCb(() =>
+            {
+                unsub1();
+                unsub2();
+                unsub3();
+                unsub4();
+                unsub5();
+            });
+        }
+
+        public Action React<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6>(
+            IReactiveCallbackOwner<TIn1> tracked1,
+            IReactiveCallbackOwner<TIn2> tracked2,
+            IReactiveCallbackOwner<TIn3> tracked3,
+            IReactiveCallbackOwner<TIn4> tracked4,
+            IReactiveCallbackOwner<TIn5> tracked5,
+            IReactiveCallbackOwner<TIn6> tracked6,
+            Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut> cb
+        )
+        {
+            Set(
+                cb(
+                    tracked1.Value,
+                    tracked2.Value,
+                    tracked3.Value,
+                    tracked4.Value,
+                    tracked5.Value,
+                    tracked6.Value
+                )
+            );
+
+            Action unsub1 = tracked1.OnChange(curr =>
+                Set(
+                    cb(
+                        curr,
+                        tracked2.Value,
+                        tracked3.Value,
+                        tracked4.Value,
+                        tracked5.Value,
+                        tracked6.Value
+                    )
+                )
+            );
+            Action unsub2 = tracked2.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        curr,
+                        tracked3.Value,
+                        tracked4.Value,
+                        tracked5.Value,
+                        tracked6.Value
+                    )
+                )
+            );
+            Action unsub3 = tracked3.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        curr,
+                        tracked4.Value,
+                        tracked5.Value,
+                        tracked6.Value
+                    )
+                )
+            );
+            Action unsub4 = tracked4.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        tracked3.Value,
+                        curr,
+                        tracked5.Value,
+                        tracked6.Value
+                    )
+                )
+            );
+            Action unsub5 = tracked5.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        tracked3.Value,
+                        tracked4.Value,
+                        curr,
+                        tracked6.Value
+                    )
+                )
+            );
+            Action unsub6 = tracked6.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        tracked3.Value,
+                        tracked4.Value,
+                        tracked5.Value,
+                        curr
+                    )
+                )
+            );
+
+            return CacheUnsubCb(() =>
+            {
+                unsub1();
+                unsub2();
+                unsub3();
+                unsub4();
+                unsub5();
+                unsub6();
+            });
+        }
+
+        public Action React<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7>(
+            IReactiveCallbackOwner<TIn1> tracked1,
+            IReactiveCallbackOwner<TIn2> tracked2,
+            IReactiveCallbackOwner<TIn3> tracked3,
+            IReactiveCallbackOwner<TIn4> tracked4,
+            IReactiveCallbackOwner<TIn5> tracked5,
+            IReactiveCallbackOwner<TIn6> tracked6,
+            IReactiveCallbackOwner<TIn7> tracked7,
+            Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut> cb
+        )
+        {
+            Set(
+                cb(
+                    tracked1.Value,
+                    tracked2.Value,
+                    tracked3.Value,
+                    tracked4.Value,
+                    tracked5.Value,
+                    tracked6.Value,
+                    tracked7.Value
+                )
+            );
+
+            Action unsub1 = tracked1.OnChange(curr =>
+                Set(
+                    cb(
+                        curr,
+                        tracked2.Value,
+                        tracked3.Value,
+                        tracked4.Value,
+                        tracked5.Value,
+                        tracked6.Value,
+                        tracked7.Value
+                    )
+                )
+            );
+            Action unsub2 = tracked2.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        curr,
+                        tracked3.Value,
+                        tracked4.Value,
+                        tracked5.Value,
+                        tracked6.Value,
+                        tracked7.Value
+                    )
+                )
+            );
+            Action unsub3 = tracked3.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        curr,
+                        tracked4.Value,
+                        tracked5.Value,
+                        tracked6.Value,
+                        tracked7.Value
+                    )
+                )
+            );
+            Action unsub4 = tracked4.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        tracked3.Value,
+                        curr,
+                        tracked5.Value,
+                        tracked6.Value,
+                        tracked7.Value
+                    )
+                )
+            );
+            Action unsub5 = tracked5.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        tracked3.Value,
+                        tracked4.Value,
+                        curr,
+                        tracked6.Value,
+                        tracked7.Value
+                    )
+                )
+            );
+            Action unsub6 = tracked6.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        tracked3.Value,
+                        tracked4.Value,
+                        tracked5.Value,
+                        curr,
+                        tracked7.Value
+                    )
+                )
+            );
+
+            Action unsub7 = tracked7.OnChange(curr =>
+                Set(
+                    cb(
+                        tracked1.Value,
+                        tracked2.Value,
+                        tracked3.Value,
+                        tracked4.Value,
+                        tracked5.Value,
+                        tracked6.Value,
+                        curr
+                    )
+                )
+            );
+
+            return CacheUnsubCb(() =>
+            {
+                unsub1();
+                unsub2();
+                unsub3();
+                unsub4();
+                unsub5();
+                unsub6();
+                unsub7();
+            });
+        }
     }
 }
