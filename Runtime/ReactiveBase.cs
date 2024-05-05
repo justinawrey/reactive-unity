@@ -12,6 +12,8 @@ namespace ReactiveUnity
         protected T? _val;
         public T? Value => _val;
 
+        protected virtual bool EqualityFunc(T? first, T? second) => Equals(first, second);
+
         private List<Action<T?, T?>> _cbs = new List<Action<T?, T?>>();
 
         protected void Set(T? to)
@@ -19,7 +21,7 @@ namespace ReactiveUnity
             T? prevValue = _val;
             _val = to;
 
-            if (Equals(prevValue, _val))
+            if (EqualityFunc(prevValue, _val))
             {
                 return;
             }
