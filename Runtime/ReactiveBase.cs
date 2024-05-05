@@ -14,6 +14,8 @@ namespace ReactiveUnity
 
         protected virtual bool EqualityFunc(T? first, T? second) => Equals(first, second);
 
+        protected virtual void FlushAdditionalCbs(T? prev, T? curr) { }
+
         private List<Action<T?, T?>> _cbs = new List<Action<T?, T?>>();
 
         protected void Set(T? to)
@@ -27,6 +29,7 @@ namespace ReactiveUnity
             }
 
             _cbs.ForEach(cb => cb(prevValue, _val));
+            FlushAdditionalCbs(prevValue, _val);
         }
 
         public Action OnChange(Action<T?, T?> cb)
