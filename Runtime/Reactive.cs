@@ -12,14 +12,8 @@ namespace ReactiveUnity
 
         public new T Value
         {
-            get
-            {
-                return _val;
-            }
-            set
-            {
-                Set(value);
-            }
+            get { return _val; }
+            set { Set(value); }
         }
     }
 }
