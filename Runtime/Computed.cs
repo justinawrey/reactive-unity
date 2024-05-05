@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using UnityEngine;
 
@@ -6,9 +7,9 @@ namespace ReactiveUnity
     [Serializable]
     public class Computed<TOut> : ReactiveBase<TOut>
     {
-        private Action _unsub = null;
+        private Action? _unsub = null;
 
-        public Action React<TIn1>(IReactiveCallbackOwner<TIn1> tracked, Func<TIn1, TOut> cb)
+        public Action React<TIn1>(IReactiveCallbackOwner<TIn1?> tracked, Func<TIn1?, TOut> cb)
         {
             Set(cb(tracked.Value));
             return CacheUnsubCb(tracked.OnChange(curr => Set(cb(curr))));
@@ -28,9 +29,9 @@ namespace ReactiveUnity
         }
 
         public Action React<TIn1, TIn2>(
-            IReactiveCallbackOwner<TIn1> tracked1,
-            IReactiveCallbackOwner<TIn2> tracked2,
-            Func<TIn1, TIn2, TOut> cb
+            IReactiveCallbackOwner<TIn1?> tracked1,
+            IReactiveCallbackOwner<TIn2?> tracked2,
+            Func<TIn1?, TIn2?, TOut> cb
         )
         {
             Set(cb(tracked1.Value, tracked2.Value));
@@ -46,10 +47,10 @@ namespace ReactiveUnity
         }
 
         public Action React<TIn1, TIn2, TIn3>(
-            IReactiveCallbackOwner<TIn1> tracked1,
-            IReactiveCallbackOwner<TIn2> tracked2,
-            IReactiveCallbackOwner<TIn3> tracked3,
-            Func<TIn1, TIn2, TIn3, TOut> cb
+            IReactiveCallbackOwner<TIn1?> tracked1,
+            IReactiveCallbackOwner<TIn2?> tracked2,
+            IReactiveCallbackOwner<TIn3?> tracked3,
+            Func<TIn1?, TIn2?, TIn3?, TOut> cb
         )
         {
             Set(cb(tracked1.Value, tracked2.Value, tracked3.Value));
@@ -73,11 +74,11 @@ namespace ReactiveUnity
         }
 
         public Action React<TIn1, TIn2, TIn3, TIn4>(
-            IReactiveCallbackOwner<TIn1> tracked1,
-            IReactiveCallbackOwner<TIn2> tracked2,
-            IReactiveCallbackOwner<TIn3> tracked3,
+            IReactiveCallbackOwner<TIn1?> tracked1,
+            IReactiveCallbackOwner<TIn2?> tracked2,
+            IReactiveCallbackOwner<TIn3?> tracked3,
             IReactiveCallbackOwner<TIn4> tracked4,
-            Func<TIn1, TIn2, TIn3, TIn4, TOut> cb
+            Func<TIn1?, TIn2?, TIn3?, TIn4?, TOut> cb
         )
         {
             Set(cb(tracked1.Value, tracked2.Value, tracked3.Value, tracked4.Value));
@@ -105,12 +106,12 @@ namespace ReactiveUnity
         }
 
         public Action React<TIn1, TIn2, TIn3, TIn4, TIn5>(
-            IReactiveCallbackOwner<TIn1> tracked1,
-            IReactiveCallbackOwner<TIn2> tracked2,
-            IReactiveCallbackOwner<TIn3> tracked3,
-            IReactiveCallbackOwner<TIn4> tracked4,
-            IReactiveCallbackOwner<TIn5> tracked5,
-            Func<TIn1, TIn2, TIn3, TIn4, TIn5, TOut> cb
+            IReactiveCallbackOwner<TIn1?> tracked1,
+            IReactiveCallbackOwner<TIn2?> tracked2,
+            IReactiveCallbackOwner<TIn3?> tracked3,
+            IReactiveCallbackOwner<TIn4?> tracked4,
+            IReactiveCallbackOwner<TIn5?> tracked5,
+            Func<TIn1?, TIn2?, TIn3?, TIn4?, TIn5?, TOut> cb
         )
         {
             Set(cb(tracked1.Value, tracked2.Value, tracked3.Value, tracked4.Value, tracked5.Value));
@@ -142,13 +143,13 @@ namespace ReactiveUnity
         }
 
         public Action React<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6>(
-            IReactiveCallbackOwner<TIn1> tracked1,
+            IReactiveCallbackOwner<TIn1?> tracked1,
             IReactiveCallbackOwner<TIn2> tracked2,
-            IReactiveCallbackOwner<TIn3> tracked3,
-            IReactiveCallbackOwner<TIn4> tracked4,
-            IReactiveCallbackOwner<TIn5> tracked5,
-            IReactiveCallbackOwner<TIn6> tracked6,
-            Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TOut> cb
+            IReactiveCallbackOwner<TIn3?> tracked3,
+            IReactiveCallbackOwner<TIn4?> tracked4,
+            IReactiveCallbackOwner<TIn5?> tracked5,
+            IReactiveCallbackOwner<TIn6?> tracked6,
+            Func<TIn1?, TIn2?, TIn3?, TIn4?, TIn5?, TIn6?, TOut> cb
         )
         {
             Set(
@@ -247,14 +248,14 @@ namespace ReactiveUnity
         }
 
         public Action React<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7>(
-            IReactiveCallbackOwner<TIn1> tracked1,
-            IReactiveCallbackOwner<TIn2> tracked2,
-            IReactiveCallbackOwner<TIn3> tracked3,
-            IReactiveCallbackOwner<TIn4> tracked4,
-            IReactiveCallbackOwner<TIn5> tracked5,
-            IReactiveCallbackOwner<TIn6> tracked6,
-            IReactiveCallbackOwner<TIn7> tracked7,
-            Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TOut> cb
+            IReactiveCallbackOwner<TIn1?> tracked1,
+            IReactiveCallbackOwner<TIn2?> tracked2,
+            IReactiveCallbackOwner<TIn3?> tracked3,
+            IReactiveCallbackOwner<TIn4?> tracked4,
+            IReactiveCallbackOwner<TIn5?> tracked5,
+            IReactiveCallbackOwner<TIn6?> tracked6,
+            IReactiveCallbackOwner<TIn7?> tracked7,
+            Func<TIn1?, TIn2?, TIn3?, TIn4?, TIn5?, TIn6?, TIn7?, TOut> cb
         )
         {
             Set(
@@ -375,15 +376,15 @@ namespace ReactiveUnity
         }
 
         public Action React<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8>(
-            IReactiveCallbackOwner<TIn1> tracked1,
-            IReactiveCallbackOwner<TIn2> tracked2,
-            IReactiveCallbackOwner<TIn3> tracked3,
-            IReactiveCallbackOwner<TIn4> tracked4,
-            IReactiveCallbackOwner<TIn5> tracked5,
-            IReactiveCallbackOwner<TIn6> tracked6,
-            IReactiveCallbackOwner<TIn7> tracked7,
-            IReactiveCallbackOwner<TIn8> tracked8,
-            Func<TIn1, TIn2, TIn3, TIn4, TIn5, TIn6, TIn7, TIn8, TOut> cb
+            IReactiveCallbackOwner<TIn1?> tracked1,
+            IReactiveCallbackOwner<TIn2?> tracked2,
+            IReactiveCallbackOwner<TIn3?> tracked3,
+            IReactiveCallbackOwner<TIn4?> tracked4,
+            IReactiveCallbackOwner<TIn5?> tracked5,
+            IReactiveCallbackOwner<TIn6?> tracked6,
+            IReactiveCallbackOwner<TIn7?> tracked7,
+            IReactiveCallbackOwner<TIn8?> tracked8,
+            Func<TIn1?, TIn2?, TIn3?, TIn4?, TIn5?, TIn6?, TIn7?, TIn8?, TOut> cb
         )
         {
             Set(
@@ -528,3 +529,4 @@ namespace ReactiveUnity
         }
     }
 }
+#nullable disable
