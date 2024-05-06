@@ -39,7 +39,10 @@ namespace ReactiveUnity
 
         public new void Add(T item)
         {
-            base.Add(item);
+            if (!base.Add(item))
+            {
+                return;
+            }
 
             foreach (Action<T> cb in _addCbs)
             {
@@ -49,7 +52,10 @@ namespace ReactiveUnity
 
         public new void Remove(T item)
         {
-            base.Remove(item);
+            if (!base.Remove(item))
+            {
+                return;
+            }
 
             foreach (Action<T> cb in _removeCbs)
             {
