@@ -65,15 +65,16 @@ namespace ReactiveUnity
 
         public new void Clear()
         {
-            foreach (T item in this)
+            HashSet<T> copy = new HashSet<T>(this);
+            base.Clear();
+
+            foreach (T item in copy)
             {
                 foreach (Action<T> cb in _removeCbs)
                 {
                     cb(item);
                 }
             }
-
-            base.Clear();
         }
     }
 }

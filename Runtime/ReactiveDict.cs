@@ -60,15 +60,16 @@ namespace ReactiveUnity
 
         public new void Clear()
         {
-            foreach (var kvp in this)
+            Dictionary<K, V> copy = new Dictionary<K, V>(this);
+            base.Clear();
+
+            foreach (var kvp in copy)
             {
                 foreach (Action<K, V> cb in _removeCbs)
                 {
                     cb(kvp.Key, kvp.Value);
                 }
             }
-
-            base.Clear();
         }
     }
 }

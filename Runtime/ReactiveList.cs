@@ -59,15 +59,16 @@ namespace ReactiveUnity
 
         public new void Clear()
         {
-            ForEach(item =>
+            List<T> copy = new List<T>(this);
+            base.Clear();
+
+            copy.ForEach(item =>
             {
                 foreach (Action<T> cb in _removeCbs)
                 {
                     cb(item);
                 }
             });
-
-            base.Clear();
         }
     }
 }
