@@ -32,9 +32,15 @@ namespace ReactiveUnity
                 return false;
             }
 
+            // try and avoid the implicit boxing conversion
 #pragma warning disable 8604
-            return EqualityComparer<T>.Default.Equals(first, second);
+            if (first is IEquatable<T> fe)
+            {
+                return fe.Equals(second);
+            }
 #pragma warning restore 8604
+
+            return Equals(first, second);
         }
 
         protected virtual void FlushAdditionalCbs(T? prev, T? curr) { }
