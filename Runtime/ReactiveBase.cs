@@ -32,20 +32,9 @@ namespace ReactiveUnity
                 return false;
             }
 
-#pragma warning disable 8600
-            T f = (T)first;
-            T s = (T)second;
-#pragma warning restore 8600
-
-            // try and avoid the implicit boxing conversion
 #pragma warning disable 8604
-            if (f is IEquatable<T> fe)
-            {
-                return fe.Equals(s);
-            }
-#pragma warning disable 8604
-
-            return Equals(f, s);
+            return EqualityComparer<T>.Default.Equals(first, second);
+#pragma warning restore 8604
         }
 
         protected virtual void FlushAdditionalCbs(T? prev, T? curr) { }
