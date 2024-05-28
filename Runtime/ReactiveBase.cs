@@ -10,9 +10,15 @@ namespace ReactiveUnity
     {
         [SerializeField]
         protected T? _val;
-        public T? Value => _val;
+        public T? Value
+        {
+            get { return _val; }
+        }
 
-        protected virtual bool EqualityFunc(T? first, T? second) => Equals(first, second);
+        protected virtual bool EqualityFunc(T? first, T? second)
+        {
+            return Equals(first, second);
+        }
 
         protected virtual void FlushAdditionalCbs(T? prev, T? curr) { }
 
@@ -28,7 +34,11 @@ namespace ReactiveUnity
                 return;
             }
 
-            _cbs.ForEach(cb => cb(prevValue, _val));
+            int numCbs = _cbs.Count;
+            for (int i = 0; i < numCbs; i++)
+            {
+                _cbs[i](prevValue, _val);
+            }
             FlushAdditionalCbs(prevValue, _val);
         }
 
