@@ -17,6 +17,27 @@ namespace ReactiveUnity
 
         protected virtual bool EqualityFunc(T? first, T? second)
         {
+            if (first is null && second is null)
+            {
+                return true;
+            }
+
+            if (first is null && second is not null)
+            {
+                return false;
+            }
+
+            if (first is not null && second is null)
+            {
+                return false;
+            }
+
+            // try and avoid the implicit boxing conversion
+            if (first is IEquatable<T> f && second is IEquatable<T> s)
+            {
+                return f.Equals(s);
+            }
+
             return Equals(first, second);
         }
 
