@@ -1,15 +1,35 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ReactiveUnity
 {
     [Serializable]
-    public class ReactiveDict<K, V> : Dictionary<K, V>, IReactiveCallbackOwner<Dictionary<K, V>>
+    public class KVP<K, V>
+    {
+        public K? Key = default(K);
+        public V? Val = default(V);
+
+        public KVP(K key, V val)
+        {
+            Key = key;
+            Val = val;
+        }
+    }
+
+    [Serializable]
+    public class ReactiveDict<K, V>
+        : Dictionary<K, V>,
+            IReactiveCallbackOwner<Dictionary<K, V>>,
+            ISerializationCallbackReceiver
     {
         private List<Action<K, V>> _addCbs = new List<Action<K, V>>();
         private List<Action<K, V>> _removeCbs = new List<Action<K, V>>();
         public Dictionary<K, V>? Value => this;
+
+        [SerializeField]
+        private List<KVP<K, V>> _kvps = new List<KVP<K, V>>();
 
         public Action OnAdd(Action<K, V> cb)
         {
@@ -69,6 +89,26 @@ namespace ReactiveUnity
                 {
                     cb(kvp.Key, kvp.Value);
                 }
+            }
+        }
+
+        public void OnBeforeSerialize()
+        {
+            _kvps.Clear();
+            foreach (var (key, val) in this)
+            {
+                _kvps.Add(new KVP<K, V>(key, val));
+            }
+        }
+
+        public void OnAfterDeserialize()
+        {
+            base.Clear();
+            foreach (var kvp in _kvps)
+            {
+#pragma warning disable 8604
+                base.Add(kvp.Key, kvp.Val);
+#pragma warning restore 8604
             }
         }
     }

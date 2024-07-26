@@ -1,15 +1,22 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ReactiveUnity
 {
     [Serializable]
-    public class ReactiveList<T> : List<T>, IReactiveCallbackOwner<List<T>>
+    public class ReactiveList<T>
+        : List<T>,
+            IReactiveCallbackOwner<List<T>>,
+            ISerializationCallbackReceiver
     {
         private List<Action<T>> _addCbs = new List<Action<T>>();
         private List<Action<T>> _removeCbs = new List<Action<T>>();
         public List<T>? Value => this;
+
+        [SerializeField]
+        private List<T> _internal = new List<T>();
 
         public Action OnAdd(Action<T> cb)
         {
@@ -69,6 +76,18 @@ namespace ReactiveUnity
                     cb(item);
                 }
             });
+        }
+
+        public void OnBeforeSerialize()
+        {
+            _internal.Clear();
+            _internal.AddRange(this);
+        }
+
+        public void OnAfterDeserialize()
+        {
+            base.Clear();
+            AddRange(_internal);
         }
     }
 }

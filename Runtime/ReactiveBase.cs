@@ -51,12 +51,22 @@ namespace ReactiveUnity
                 return;
             }
 
+            FlushCallbacks(prevValue, _val);
+        }
+
+        private void FlushCallbacks(T? prevVal, T? val)
+        {
             int numCbs = _cbs.Count;
             for (int i = 0; i < numCbs; i++)
             {
-                _cbs[i](prevValue, _val);
+                _cbs[i](prevVal, val);
             }
-            FlushAdditionalCbs(prevValue, _val);
+            FlushAdditionalCbs(prevVal, val);
+        }
+
+        private void ForceFlushCallbacks()
+        {
+            FlushCallbacks(default(T), _val);
         }
 
         public Action OnChange(Action<T?, T?> cb)
