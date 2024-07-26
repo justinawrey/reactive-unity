@@ -33,6 +33,7 @@ namespace ReactiveUnity.PropertyDrawers
             return EditorGUI.GetPropertyHeight(GetValueProperty(property));
         }
 
+        // update live in editor looooool
         private void ForceFlushCallbacks(SerializedProperty property)
         {
             object targetObject = property.serializedObject.targetObject;
