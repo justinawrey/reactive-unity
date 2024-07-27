@@ -8,7 +8,7 @@ namespace ReactiveUnity.PropertyDrawers
     public class ReactiveDictPropertyDrawer : PropertyDrawer
     {
         private bool _rectsDebug = false;
-        private bool _foldedOut = true;
+        private bool _foldedOut = false;
         private float _removeButtonWidth = 60;
         private float _horizontalLineSpacing = EditorGUIUtility.standardVerticalSpacing;
         private float _buttonWidgetVertPadding = 10;
@@ -91,6 +91,7 @@ namespace ReactiveUnity.PropertyDrawers
                 return;
             }
 
+            EditorGUI.BeginChangeCheck();
             var enumerator = kvps.GetEnumerator();
             int i = 1;
             while (enumerator.MoveNext())
@@ -134,9 +135,18 @@ namespace ReactiveUnity.PropertyDrawers
                 DrawRect(valRect, Color.green);
                 i++;
             }
+            bool changed = EditorGUI.EndChangeCheck();
+
+            if (changed)
+            {
+                property.serializedObject.ApplyModifiedProperties();
+                ForceFlushCallbacks(property);
+            }
 
             DrawAddKeyWidget(position, property, kvps, keyType, valType);
         }
+
+        private void ForceFlushCallbacks(SerializedProperty property) { }
 
         private Rect WithLineOffset(Rect rect, int lines, float additionalSpacing = 0)
         {
