@@ -37,20 +37,50 @@ namespace ReactiveUnity.PropertyDrawers
         private void ForceFlushCallbacks(SerializedProperty property)
         {
             object targetObject = property.serializedObject.targetObject;
-            FieldInfo fieldInfo = targetObject
-                .GetType()
-                .GetField(
-                    property.propertyPath,
+            string[] path = property.propertyPath.Split('.');
+
+            // Traverse the object hierarchy to get the parent object
+            for (int i = 0; i < path.Length - 1; i++)
+            {
+                string pathPart = path[i];
+                // Handle array elements if needed
+                if (pathPart == "Array" && path.Length > i + 1 && path[i + 1].StartsWith("data["))
+                {
+                    // Skip "Array" and process the array index
+                    i++;
+                    continue;
+                }
+
+                FieldInfo fieldInfo = targetObject.GetType().GetField(
+                    pathPart,
                     BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public
                 );
-            object fieldValue = fieldInfo.GetValue(targetObject);
 
-            Type reactiveVarType = fieldInfo.FieldType;
-            MethodInfo methodInfo = reactiveVarType.BaseType.GetMethod(
+                if (fieldInfo != null)
+                {
+                    targetObject = fieldInfo.GetValue(targetObject);
+                    if (targetObject == null) return; // Exit if any parent in the chain is null
+                }
+            }
+
+            // Get the final field info for the reactive variable
+            string fieldName = path[path.Length - 1];
+            FieldInfo finalFieldInfo = targetObject.GetType().GetField(
+                fieldName,
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public
+            );
+
+            if (finalFieldInfo == null) return;
+
+            object fieldValue = finalFieldInfo.GetValue(targetObject);
+            if (fieldValue == null) return;
+
+            Type reactiveVarType = finalFieldInfo.FieldType;
+            MethodInfo methodInfo = reactiveVarType.BaseType?.GetMethod(
                 "ForceFlushCallbacks",
                 BindingFlags.NonPublic | BindingFlags.Instance
             );
-            methodInfo.Invoke(fieldValue, null);
+            methodInfo?.Invoke(fieldValue, null);
         }
     }
 }
